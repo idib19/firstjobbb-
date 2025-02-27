@@ -11,9 +11,9 @@ export interface Product {
 export const phones: Product[] = [
   {
     id: 1,
-    name: 'iPhone 14 Pro',
+    name: 'iPhone 13 Pro',
     price: 999,
-    image: 'https://images.unsplash.com/photo-1678652197831-2d180705cd2c?auto=format&fit=crop&w=800&q=80',
+    image: 'https://www.clevercel.co/cdn/shop/files/Back-side_13-Pro-Max_Graphite_1200x.jpg?v=1740165234',
     specs: [
       'Écran Super Retina XDR 6,1"',
       'Puce A16 Bionic',
@@ -26,7 +26,7 @@ export const phones: Product[] = [
     id: 2,
     name: 'Samsung Galaxy S23 Ultra',
     price: 1199,
-    image: 'https://images.unsplash.com/photo-1677100758467-0d3ee9d9e70e?auto=format&fit=crop&w=800&q=80',
+    image: 'https://www.samsungmobilepress.com/file/96BC5058B2D90757F88741FE064FF3E2B56A886DCF39C1BEBCB8410D97D5BB169CC1129A70F71DD4772DC894268BAD2F2D08DA521FCFD4960FE28D7AC228C3A399257940C3297BD8262B033538A2443820D0F587D09578A68693189D05093CB5A40F654B441CC8BA22F09886F46475CBD316273ED9FD1BF313EDCF2CF8EC3323C56154CB292B12EED59C426749DB73C7',
     specs: [
       'Écran Dynamic AMOLED 6,8"',
       'Snapdragon 8 Gen 2',
@@ -39,7 +39,7 @@ export const phones: Product[] = [
     id: 3,
     name: 'Google Pixel 7 Pro',
     price: 899,
-    image: 'https://images.unsplash.com/photo-1667831277039-d4e285b3e492?auto=format&fit=crop&w=800&q=80',
+    image: 'https://www.cnet.com/a/img/resize/ba283a569a589112c81570e9de3f6ec578bb4688/hub/2022/10/11/045aec54-0c3c-463d-8416-a49cae733942/pixel-7-pro-watch-lanxon-promo-11.jpg?auto=webp&fit=crop&height=1200&width=1200',
     specs: [
       'Écran LTPO OLED 6,7"',
       'Google Tensor G2',
@@ -51,8 +51,8 @@ export const phones: Product[] = [
   {
     id: 4,
     name: 'iPhone 14',
-    price: 799,
-    image: 'https://images.unsplash.com/photo-1678652197831-2d180705cd2c?auto=format&fit=crop&w=800&q=80',
+    price: 849,
+    image: 'https://openbox.ca/cdn/shop/files/4_ec99b175-7a77-49e1-88a6-ba855f4c4ac8_800x.jpg?v=1720044039',
     specs: [
       'Écran Super Retina XDR 6,1"',
       'Puce A15 Bionic',
@@ -65,7 +65,7 @@ export const phones: Product[] = [
     id: 5,
     name: 'Samsung Galaxy Z Fold 4',
     price: 1799,
-    image: 'https://images.unsplash.com/photo-1675785732030-3679d0375d1e?auto=format&fit=crop&w=800&q=80',
+    image: 'https://imageio.forbes.com/specials-images/imageserve/631822a69a253fdf6ab586d8/1-Q4-KV-MO-Graygreen-notext/960x0.jpg?format=jpg&width=960',
     specs: [
       'Écran pliable 7,6"',
       'Snapdragon 8+ Gen 1',
@@ -76,41 +76,15 @@ export const phones: Product[] = [
   },
   {
     id: 6,
-    name: 'OnePlus 11',
-    price: 849,
-    image: 'https://images.unsplash.com/photo-1676447094201-77907c6bc4c5?auto=format&fit=crop&w=800&q=80',
+    name: 'iPhone 13',
+    price: 799,
+    image: 'https://multimedia.bbycastatic.ca/multimedia/products/500x500/142/14283/14283413.jpeg',
     specs: [
-      'Écran AMOLED 6,7"',
-      'Snapdragon 8 Gen 2',
-      'Hasselblad 50MP',
-      'Charge 100W',
-      'OxygenOS 13'
+      'Écran Super Retina XDR 6,1"',
+      'Puce A15 Bionic',
+      'Double appareil photo 12MP',
+      'Mode Cinématique',
+      'MagSafe'
     ],
   },
-  {
-    id: 7,
-    name: 'Xiaomi 13 Pro',
-    price: 999,
-    image: 'https://images.unsplash.com/photo-1678652197831-2d180705cd2c?auto=format&fit=crop&w=800&q=80',
-    specs: [
-      'Écran AMOLED 6,73"',
-      'Snapdragon 8 Gen 2',
-      'Leica 50MP',
-      'Charge 120W',
-      'MIUI 14'
-    ],
-  },
-  {
-    id: 8,
-    name: 'Nothing Phone (2)',
-    price: 699,
-    image: 'https://images.unsplash.com/photo-1678652197831-2d180705cd2c?auto=format&fit=crop&w=800&q=80',
-    specs: [
-      'Écran OLED 6,7"',
-      'Snapdragon 8+ Gen 1',
-      'Interface Glyph',
-      'Double appareil photo 50MP',
-      'Nothing OS 2.0'
-    ],
-  }
 ];

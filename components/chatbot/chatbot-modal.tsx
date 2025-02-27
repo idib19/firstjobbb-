@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { sendMessage } from '@/lib/chatbot/api';
 import { useChatbot } from './chatbot-provider';
@@ -19,6 +19,14 @@ export function ChatbotModal({
 }) {
   const { messages, addMessage } = useChatbot();
   const [input, setInput] = useState('');
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  // Auto scroll to bottom when new messages arrive
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   // Use React Query for handling the API call
   const mutation = useMutation({
@@ -27,7 +35,7 @@ export function ChatbotModal({
       // Add the assistant's response to the chat
       addMessage({
         role: 'assistant',
-        content: data.message,
+        content: data.content,
       });
     },
     onError: (error) => {
@@ -41,7 +49,7 @@ export function ChatbotModal({
   });
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || mutation.isPending) return;
 
     // Add user message immediately
     const userMessage: Message = {
@@ -60,44 +68,45 @@ export function ChatbotModal({
       <DialogContent className="sm:max-w-[425px]">
         <DialogTitle>Assistant TechFix Pro</DialogTitle>
         <div className="flex flex-col h-[500px]">
-          <div className="flex-1 overflow-hidden">
-            <ScrollArea className="h-full p-4">
-              {messages.map((message, i) => (
+          <ScrollArea 
+            className="flex-1 p-4"
+            ref={scrollAreaRef}
+          >
+            {messages.map((message, i) => (
+              <div
+                key={i}
+                className={`mb-4 ${
+                  message.role === 'assistant'
+                    ? 'text-left'
+                    : 'text-right'
+                }`}
+              >
                 <div
-                  key={i}
-                  className={`mb-4 ${
+                  className={`inline-block p-3 rounded-lg ${
                     message.role === 'assistant'
-                      ? 'text-left'
-                      : 'text-right'
+                      ? 'bg-secondary text-secondary-foreground'
+                      : 'bg-primary text-primary-foreground'
                   }`}
                 >
-                  <div
-                    className={`inline-block p-3 rounded-lg ${
-                      message.role === 'assistant'
-                        ? 'bg-secondary text-secondary-foreground'
-                        : 'bg-primary text-primary-foreground'
-                    }`}
-                  >
-                    {message.content}
-                  </div>
+                  {message.content}
                 </div>
-              ))}
-              {mutation.isPending && (
-                <div className="text-left mb-4">
-                  <div className="inline-block p-3 rounded-lg bg-secondary text-secondary-foreground">
-                    <span className="animate-pulse">...</span>
-                  </div>
+              </div>
+            ))}
+            {mutation.isPending && (
+              <div className="text-left mb-4">
+                <div className="inline-block p-3 rounded-lg bg-secondary text-secondary-foreground">
+                  <span className="animate-pulse">...</span>
                 </div>
-              )}
-            </ScrollArea>
-          </div>
+              </div>
+            )}
+          </ScrollArea>
           <div className="p-4 border-t">
             <div className="flex gap-2">
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Tapez votre message..."
-                onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                 disabled={mutation.isPending}
               />
               <Button 

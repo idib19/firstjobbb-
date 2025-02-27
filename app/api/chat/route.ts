@@ -1,35 +1,54 @@
-import { NextResponse } from 'next/server';
-import { Message } from '@/lib/chatbot/types';
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
 
-// Placeholder responses for testing
-const mockResponses = [
-  "Je comprends que vous vous intéressez à nos produits. Comment puis-je vous aider aujourd'hui ?",
-  "C'est une excellente question sur nos services. Permettez-moi de vous aider.",
-  "Je peux certainement vous aider avec des informations sur nos services de réparation de téléphone.",
-  "Souhaitez-vous en savoir plus sur nos derniers modèles de smartphones ?",
-  "Je peux vous aider à trouver les accessoires parfaits pour votre appareil.",
-];
-
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    // Parse the incoming request
-    const body = await request.json();
-    const { message } = body as { message: string };
+    const { messages } = await req.json();
 
-    // Simulate API processing delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    if (!messages || !Array.isArray(messages)) {
+      return Response.json(
+        { error: 'Invalid messages format' },
+        { status: 400 }
+      );
+    }
 
-    // Get a random response from the mock responses
-    const response = mockResponses[Math.floor(Math.random() * mockResponses.length)];
-
-    // Return the mock response
-    return NextResponse.json({
-      message: response,
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful customer service assistant for a smartphone store called Allo Fix. Answer in French.',
+          },
+          ...messages,
+        ],
+      }),
     });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error?.message || 'OpenAI API error');
+    }
+
+    const data = await response.json();
+    
+    if (!data.choices?.[0]?.message) {
+      throw new Error('Invalid response format from OpenAI');
+    }
+
+    return Response.json(data.choices[0].message);
+
   } catch (error) {
     console.error('Chat API Error:', error);
-    return NextResponse.json(
-      { error: 'Échec du traitement du message' },
+    return Response.json(
+      { 
+        error: error instanceof Error ? error.message : 'An unexpected error occurred'
+      },
       { status: 500 }
     );
   }
